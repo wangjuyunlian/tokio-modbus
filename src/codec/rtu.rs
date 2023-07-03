@@ -100,22 +100,22 @@ impl FrameDecoder {
 }
 
 #[derive(Debug, Default, Eq, PartialEq)]
-pub(crate) struct RequestDecoder {
+pub struct RequestDecoder {
     frame_decoder: FrameDecoder,
 }
 
 #[derive(Debug, Default, Eq, PartialEq)]
-pub(crate) struct ResponseDecoder {
+pub struct ResponseDecoder {
     frame_decoder: FrameDecoder,
 }
 
 #[derive(Debug, Default, Eq, PartialEq)]
-pub(crate) struct ClientCodec {
+pub struct ClientCodec {
     pub(crate) decoder: ResponseDecoder,
 }
 
 #[derive(Debug, Default, Eq, PartialEq)]
-pub(crate) struct ServerCodec {
+pub struct ServerCodec {
     pub(crate) decoder: RequestDecoder,
 }
 

@@ -30,9 +30,9 @@ pub mod client;
 pub mod slave;
 pub use self::slave::{Slave, SlaveId};
 
-mod codec;
+pub mod codec;
 
-mod frame;
+pub mod frame;
 pub use self::frame::{Address, FunctionCode, Quantity, Request, Response};
 
 mod service;

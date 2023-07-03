@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 #[cfg(feature = "rtu")]
-pub(crate) mod rtu;
+pub mod rtu;
 
 #[cfg(feature = "tcp")]
-pub(crate) mod tcp;
+pub mod tcp;
 
 use std::{error, fmt};
 
@@ -227,7 +227,7 @@ pub struct ExceptionResponse {
 
 /// Represents a message from the client (slave) to the server (master).
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub(crate) struct RequestPdu(pub(crate) Request);
+pub struct RequestPdu(pub(crate) Request);
 
 impl From<Request> for RequestPdu {
     fn from(from: Request) -> Self {
@@ -243,7 +243,7 @@ impl From<RequestPdu> for Request {
 
 /// Represents a message from the server (slave) to the client (master).
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub(crate) struct ResponsePdu(pub(crate) Result<Response, ExceptionResponse>);
+pub struct ResponsePdu(pub(crate) Result<Response, ExceptionResponse>);
 
 impl From<Response> for ResponsePdu {
     fn from(from: Response) -> Self {

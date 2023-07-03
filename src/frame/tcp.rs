@@ -7,22 +7,22 @@ pub(crate) type TransactionId = u16;
 pub(crate) type UnitId = u8;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub(crate) struct Header {
-    pub(crate) transaction_id: TransactionId,
-    pub(crate) unit_id: UnitId,
+pub struct Header {
+    pub transaction_id: TransactionId,
+    pub unit_id: UnitId,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RequestAdu {
-    pub(crate) hdr: Header,
-    pub(crate) pdu: RequestPdu,
-    pub(crate) disconnect: bool,
+    pub hdr: Header,
+    pub pdu: RequestPdu,
+    pub disconnect: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub(crate) struct ResponseAdu {
-    pub(crate) hdr: Header,
-    pub(crate) pdu: ResponsePdu,
+pub struct ResponseAdu {
+    pub hdr: Header,
+    pub pdu: ResponsePdu,
 }
 
 impl From<RequestAdu> for Request {

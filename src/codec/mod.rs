@@ -3,10 +3,10 @@
 
 #![allow(deprecated)]
 #[cfg(feature = "rtu")]
-pub(crate) mod rtu;
+pub mod rtu;
 
 #[cfg(feature = "tcp")]
-pub(crate) mod tcp;
+pub mod tcp;
 
 use crate::frame::*;
 

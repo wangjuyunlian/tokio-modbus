@@ -6,21 +6,21 @@ use super::*;
 use crate::slave::SlaveId;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub(crate) struct Header {
-    pub(crate) slave_id: SlaveId,
+pub struct Header {
+    pub slave_id: SlaveId,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RequestAdu {
-    pub(crate) hdr: Header,
-    pub(crate) pdu: RequestPdu,
-    pub(crate) disconnect: bool,
+    pub hdr: Header,
+    pub pdu: RequestPdu,
+    pub disconnect: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub(crate) struct ResponseAdu {
-    pub(crate) hdr: Header,
-    pub(crate) pdu: ResponsePdu,
+pub struct ResponseAdu {
+    pub hdr: Header,
+    pub pdu: ResponsePdu,
 }
 
 impl From<RequestAdu> for Request {

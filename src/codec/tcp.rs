@@ -18,7 +18,7 @@ const PROTOCOL_ID: u16 = 0x0000; // TCP
 pub(crate) struct AduDecoder;
 
 #[derive(Debug, PartialEq)]
-pub(crate) struct ClientCodec {
+pub struct ClientCodec {
     pub(crate) decoder: AduDecoder,
 }
 
@@ -31,7 +31,7 @@ impl Default for ClientCodec {
 }
 
 #[derive(Debug, PartialEq)]
-pub(crate) struct ServerCodec {
+pub struct ServerCodec {
     pub(crate) decoder: AduDecoder,
 }
 

@@ -243,7 +243,7 @@ impl From<RequestPdu> for Request {
 
 /// Represents a message from the server (slave) to the client (master).
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct ResponsePdu(pub(crate) Result<Response, ExceptionResponse>);
+pub struct ResponsePdu(pub Result<Response, ExceptionResponse>);
 
 impl From<Response> for ResponsePdu {
     fn from(from: Response) -> Self {

@@ -16,7 +16,7 @@ pub trait Service {
     type Error;
 
     /// The future response value.
-    type Future: Future<Output = Result<Self::Response, Self::Error>> + Send + Sync;
+    type Future: Future<Output = Result<Self::Response, Self::Error>> + Send + Sync + Unpin;
 
     /// Process the request and return the response asynchronously.
     fn call(&self, req: Self::Request) -> Self::Future;

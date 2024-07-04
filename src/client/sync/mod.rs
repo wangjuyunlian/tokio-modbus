@@ -63,10 +63,10 @@ pub trait Reader: Client {
 
 /// A transport independent synchronous writer trait.
 pub trait Writer: Client {
-    fn write_single_coil(&mut self, _: Address, _: Coil) -> Result<()>;
-    fn write_multiple_coils(&mut self, _: Address, _: &[Coil]) -> Result<()>;
-    fn write_single_register(&mut self, _: Address, _: Word) -> Result<()>;
-    fn write_multiple_registers(&mut self, _: Address, _: &[Word]) -> Result<()>;
+    fn write_single_coil(&mut self, _: Address, _: Coil) -> Result<Response>;
+    fn write_multiple_coils(&mut self, _: Address, _: &[Coil]) -> Result<Response>;
+    fn write_single_register(&mut self, _: Address, _: Word) -> Result<Response>;
+    fn write_multiple_registers(&mut self, _: Address, _: &[Word]) -> Result<Response>;
 }
 
 /// A synchronous Modbus client context.
@@ -158,7 +158,7 @@ impl Reader for Context {
 }
 
 impl Writer for Context {
-    fn write_single_register(&mut self, addr: Address, data: Word) -> Result<()> {
+    fn write_single_register(&mut self, addr: Address, data: Word) -> Result<Response> {
         block_on_with_timeout(
             &self.runtime,
             self.timeout,
@@ -166,7 +166,7 @@ impl Writer for Context {
         )
     }
 
-    fn write_multiple_registers(&mut self, addr: Address, data: &[Word]) -> Result<()> {
+    fn write_multiple_registers(&mut self, addr: Address, data: &[Word]) -> Result<Response> {
         block_on_with_timeout(
             &self.runtime,
             self.timeout,
@@ -174,7 +174,7 @@ impl Writer for Context {
         )
     }
 
-    fn write_single_coil(&mut self, addr: Address, coil: Coil) -> Result<()> {
+    fn write_single_coil(&mut self, addr: Address, coil: Coil) -> Result<Response> {
         block_on_with_timeout(
             &self.runtime,
             self.timeout,
@@ -182,7 +182,7 @@ impl Writer for Context {
         )
     }
 
-    fn write_multiple_coils(&mut self, addr: Address, coils: &[Coil]) -> Result<()> {
+    fn write_multiple_coils(&mut self, addr: Address, coils: &[Coil]) -> Result<Response> {
         block_on_with_timeout(
             &self.runtime,
             self.timeout,

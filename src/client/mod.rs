@@ -61,19 +61,25 @@ pub trait Reader: Client {
 #[async_trait]
 pub trait Writer: Client {
     /// Write a single coil (0x05)
-    async fn write_single_coil(&mut self, _: Address, _: Coil) -> Result<(), Error>;
+    async fn write_single_coil(&mut self, _: Address, _: Coil) -> Result<Response, Error>;
 
     /// Write a single holding register (0x06)
-    async fn write_single_register(&mut self, _: Address, _: Word) -> Result<(), Error>;
+    async fn write_single_register(&mut self, _: Address, _: Word) -> Result<Response, Error>;
 
     /// Write multiple coils (0x0F)
-    async fn write_multiple_coils(&mut self, _: Address, _: &[Coil]) -> Result<(), Error>;
+    async fn write_multiple_coils(&mut self, _: Address, _: &[Coil]) -> Result<Response, Error>;
 
     /// Write multiple holding registers (0x10)
-    async fn write_multiple_registers(&mut self, _: Address, _: &[Word]) -> Result<(), Error>;
+    async fn write_multiple_registers(&mut self, _: Address, _: &[Word])
+        -> Result<Response, Error>;
 
     /// Set or clear individual bits of a holding register (0x16)
-    async fn masked_write_register(&mut self, _: Address, _: Word, _: Word) -> Result<(), Error>;
+    async fn masked_write_register(
+        &mut self,
+        _: Address,
+        _: Word,
+        _: Word,
+    ) -> Result<Response, Error>;
 }
 
 /// Asynchronous Modbus client context
@@ -229,7 +235,11 @@ impl Reader for Context {
 
 #[async_trait]
 impl Writer for Context {
-    async fn write_single_coil<'a>(&'a mut self, addr: Address, coil: Coil) -> Result<(), Error> {
+    async fn write_single_coil<'a>(
+        &'a mut self,
+        addr: Address,
+        coil: Coil,
+    ) -> Result<Response, Error> {
         let rsp = self
             .client
             .call(Request::WriteSingleCoil(addr, coil))
@@ -239,7 +249,7 @@ impl Writer for Context {
             if rsp_addr != addr || rsp_coil != coil {
                 return Err(Error::new(ErrorKind::InvalidData, "invalid response"));
             }
-            Ok(())
+            Ok(rsp)
         } else {
             Err(Error::new(ErrorKind::InvalidData, "unexpected response"))
         }
@@ -249,7 +259,7 @@ impl Writer for Context {
         &'a mut self,
         addr: Address,
         coils: &[Coil],
-    ) -> Result<(), Error> {
+    ) -> Result<Response, Error> {
         let cnt = coils.len();
         let rsp = self
             .client
@@ -260,7 +270,7 @@ impl Writer for Context {
             if rsp_addr != addr || usize::from(rsp_cnt) != cnt {
                 return Err(Error::new(ErrorKind::InvalidData, "invalid response"));
             }
-            Ok(())
+            Ok(rsp)
         } else {
             Err(Error::new(ErrorKind::InvalidData, "unexpected response"))
         }
@@ -270,7 +280,7 @@ impl Writer for Context {
         &'a mut self,
         addr: Address,
         data: Word,
-    ) -> Result<(), Error> {
+    ) -> Result<Response, Error> {
         let rsp = self
             .client
             .call(Request::WriteSingleRegister(addr, data))
@@ -280,7 +290,7 @@ impl Writer for Context {
             if rsp_addr != addr || rsp_word != data {
                 return Err(Error::new(ErrorKind::InvalidData, "invalid response"));
             }
-            Ok(())
+            Ok(rsp)
         } else {
             Err(Error::new(ErrorKind::InvalidData, "unexpected response"))
         }
@@ -290,7 +300,7 @@ impl Writer for Context {
         &'a mut self,
         addr: Address,
         data: &[Word],
-    ) -> Result<(), Error> {
+    ) -> Result<Response, Error> {
         let cnt = data.len();
         let rsp = self
             .client
@@ -301,7 +311,7 @@ impl Writer for Context {
             if rsp_addr != addr || usize::from(rsp_cnt) != cnt {
                 return Err(Error::new(ErrorKind::InvalidData, "invalid response"));
             }
-            Ok(())
+            Ok(rsp)
         } else {
             Err(Error::new(ErrorKind::InvalidData, "unexpected response"))
         }
@@ -312,7 +322,7 @@ impl Writer for Context {
         address: Address,
         and_mask: Word,
         or_mask: Word,
-    ) -> Result<(), Error> {
+    ) -> Result<Response, Error> {
         let rsp = self
             .client
             .call(Request::MaskWriteRegister(address, and_mask, or_mask))
@@ -322,7 +332,7 @@ impl Writer for Context {
             if addr != address || and != and_mask || or != or_mask {
                 return Err(Error::new(ErrorKind::InvalidData, "invalid response"));
             }
-            Ok(())
+            Ok(rsp)
         } else {
             Err(Error::new(ErrorKind::InvalidData, "unexpected response"))
         }

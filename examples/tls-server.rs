@@ -256,7 +256,7 @@ async fn client_context(socket_addr: SocketAddr) {
                     ta.name_constraints,
                 )
             });
-            root_cert_store.add_server_trust_anchors(trust_anchors);
+            root_cert_store.add_trust_anchors(trust_anchors);
 
             let domain = "localhost";
             let cert_path = Path::new("./pki/client.pem");
@@ -267,7 +267,7 @@ async fn client_context(socket_addr: SocketAddr) {
             let config = rustls::ClientConfig::builder()
                 .with_safe_defaults()
                 .with_root_certificates(root_cert_store)
-                .with_single_cert(certs, keys.remove(0))
+                .with_client_auth_cert(certs, keys.remove(0))
                 .map_err(|err| io::Error::new(io::ErrorKind::InvalidInput, err))
                 .unwrap();
             let connector = TlsConnector::from(Arc::new(config));
